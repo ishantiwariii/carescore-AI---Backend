@@ -1,0 +1,36 @@
+# --- Security (CRITICAL) ---
+.env
+.env.*
+*.json
+!package.json
+!tsconfig.json
+# ^ Ignores secrets but keeps config files. 
+# If you have specific credential JSONs (like for Google Cloud), add them here:
+client_secret.json
+credentials.json
+
+# --- Python Clutter (Visible in your image) ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Virtual Environments ---
+# Even if you don't see these now, you will likely create one later.
+venv/
+env/
+.venv/
+.env/
+
+# --- IDE & OS Junk ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Flask Specific ---
+instance/
+.webassets-cache
+
+# --- Logs ---
+*.log
