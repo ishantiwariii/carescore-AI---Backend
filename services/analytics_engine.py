@@ -1,33 +1,53 @@
-# Simplified reference ranges for the example
-DEFAULT_REFERENCE_RANGES = {
-    "hemoglobin": {"min": 13.0, "max": 17.0, "unit": "g/dL"},
-    "glucose_fasting": {"min": 70, "max": 100, "unit": "mg/dL"},
-    "cholesterol": {"min": 125, "max": 200, "unit": "mg/dL"}
-}
+import os
+import json
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage
 
-def calculate_care_score(data):
+def calculate_care_score(enriched_tests: list):
     """
-    Calculates score (0-100) based on deviations[cite: 91].
+    Uses Gemini to evaluate test deviations and calculate CareScore (0–100).
     """
-    total_score = 100
-    deviations = []
 
-    for test, value in data.items():
-        try:
-            val = float(value)
-        except:
-            continue
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        temperature=0,
+        google_api_key=os.getenv("GEMINI_API_KEY")
+    )
 
-        ref = DEFAULT_REFERENCE_RANGES.get(test.lower())
-        if ref:
-            if val < ref['min']:
-                deviations.append(f"{test} is Low")
-                total_score -= 10 # Simple penalty
-            elif val > ref['max']:
-                deviations.append(f"{test} is High")
-                total_score -= 10
+    prompt = f"""
+You are a medical analysis engine.
 
-    return {
-        "score": max(0, total_score),
-        "deviations": deviations
-    }
+Your task:
+1. For each test, compare value with its reference range.
+2. Classify it as one of:
+   - "low"
+   - "normal"
+   - "high"
+3. Apply scoring rules:
+   - normal → 0 penalty
+   - low or high → -10 points
+4. Start from 100 points.
+5. Final score cannot go below 0.
+
+Rules:
+- Use ONLY provided reference ranges
+- No diagnosis
+- No explanations
+- Return ONLY valid JSON
+
+Input Tests:
+{json.dumps(enriched_tests, indent=2)}
+
+Output JSON format:
+{{
+  "score": number,
+  "deviations": {{
+    "test_name": "low | normal | high"
+  }}
+}}
+"""
+
+    response = llm.invoke([HumanMessage(content=prompt)])
+    content = response.content.strip().replace("```json", "").replace("```", "")
+
+    return json.loads(content)
