@@ -1,7 +1,6 @@
 # --- Security (CRITICAL) ---
 .env
 .env.*
-*.json
 !package.json
 !tsconfig.json
 # ^ Ignores secrets but keeps config files. 
