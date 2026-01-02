@@ -14,27 +14,51 @@ from reportlab.platypus import (
 )
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
+
+
+def normalize_explanation(explanation):
+    """
+    Ensures explanation is always a clean string for PDF rendering.
+    Handles string, dict (Gemini-style), or anything else safely.
+    """
+    if isinstance(explanation, str):
+        text = explanation
+    elif isinstance(explanation, dict):
+        text = (
+            explanation.get("content")
+            or explanation.get("summary")
+            or explanation.get("message")
+            or ""
+        )
+    else:
+        text = str(explanation or "")
+
+    return text.strip()
+
+
+
+
 def generate_biomarker_chart(tests):
     labels = []
     values = []
 
     for test in tests:
         try:
-            values.append(float(test.get("value")))
+            value = float(test.get("value"))
             labels.append(
                 test.get("test_name", "")
                 .replace("_", " ")
                 .title()
             )
+            values.append(value)
         except (TypeError, ValueError):
             continue
 
     if not values:
         return None
 
-    # Create matplotlib figure
     fig, ax = plt.subplots(figsize=(7, 4))
-    ax.bar(labels, values, color="#2563eb")
+    ax.bar(labels, values)
 
     ax.set_title("Biomarker Overview")
     ax.set_ylabel("Value")
@@ -51,6 +75,10 @@ def generate_biomarker_chart(tests):
 
     img_buffer.seek(0)
     return img_buffer
+
+
+
+
 def generate_report_pdf(report_data, analysis_result):
     buffer = io.BytesIO()
 
@@ -66,11 +94,8 @@ def generate_report_pdf(report_data, analysis_result):
     styles = getSampleStyleSheet()
     story = []
 
-   
-    story.append(Paragraph(
-        "Medical Analysis Report",
-        styles["Title"]
-    ))
+    story.append(Paragraph("Medical Analysis Report", styles["Title"]))
+    story.append(Spacer(1, 12))
 
     created_at = report_data.get("created_at")
     created_at = (
@@ -79,40 +104,56 @@ def generate_report_pdf(report_data, analysis_result):
         else datetime.now().strftime("%Y-%m-%d")
     )
 
-    story.append(Spacer(1, 10))
     story.append(Paragraph(f"<b>Date:</b> {created_at}", styles["Normal"]))
-    story.append(Paragraph(
-        f"<b>CareScore:</b> {analysis_result.get('care_score', 'N/A')} / 100",
-        styles["Normal"]
-    ))
+    story.append(
+        Paragraph(
+            f"<b>CareScore:</b> {analysis_result.get('care_score', 'N/A')} / 100",
+            styles["Normal"]
+        )
+    )
 
     story.append(Spacer(1, 20))
 
-   
-    explanation = analysis_result.get("explanation")
-    if explanation:
+    explanation_raw = analysis_result.get("explanation")
+    explanation_text = normalize_explanation(explanation_raw)
+
+    if explanation_text:
         story.append(Paragraph("AI Summary", styles["Heading2"]))
         story.append(Spacer(1, 6))
+
+        explanation_text = explanation_text.replace("\n\n", "<br/><br/>")
+        explanation_text = explanation_text.replace("\n", "<br/>")
+
         story.append(
-            Paragraph(
-                explanation.replace("\n", "<br/>"),
-                styles["BodyText"]
-            )
+            Paragraph(explanation_text, styles["BodyText"])
         )
         story.append(Spacer(1, 18))
 
+    raw_deviations = analysis_result.get("deviations", [])
 
-    deviations = analysis_result.get("deviations", [])
-    if deviations:
+    deviation_list = []
+
+    if isinstance(raw_deviations, dict):
+        deviation_list = [
+            f"{test.replace('_', ' ').title()} ({status})"
+            for test, status in raw_deviations.items()
+            if status != "normal"
+        ]
+
+    elif isinstance(raw_deviations, list):
+        deviation_list = raw_deviations
+
+    if deviation_list:
         story.append(Paragraph("Deviations Detected", styles["Heading2"]))
         story.append(Spacer(1, 6))
 
-        for dev in deviations:
+        for dev in deviation_list:
             story.append(
                 Paragraph(f"• {dev}", styles["BodyText"])
             )
 
         story.append(Spacer(1, 18))
+
 
     tests = report_data.get("confirmed_data", {}).get("tests", [])
 
@@ -130,8 +171,8 @@ def generate_report_pdf(report_data, analysis_result):
                 .replace("_", " ")
                 .title(),
                 str(t.get("value", "")),
-                t.get("unit", ""),
-                t.get("reference_range", "")
+                t.get("unit", "—"),
+                t.get("reference_range", "—")
             ])
 
         table = Table(
