@@ -4,10 +4,16 @@ from database.storage import upload_file, get_public_url
 from database.db_service import DBService
 import uuid
 
-report_bp = Blueprint('report_bp', __name__)
+report_bp = Blueprint("report_bp", __name__)
 
 @report_bp.route("/upload", methods=["POST"])
 def upload_report():
+    print("---- UPLOAD DEBUG ----")
+    print("FILES:", request.files)
+    print("FORM:", request.form)
+    print("HEADERS:", request.headers.get("Content-Type"))
+    print("----------------------")
+
     if "file" not in request.files:
         return jsonify({"success": False, "error": "No file uploaded"}), 400
 
@@ -19,7 +25,7 @@ def upload_report():
 
     try:
         
-        file_ext = file.filename.split(".")[-1]
+        file_ext = file.filename.rsplit(".", 1)[-1]
         file_path = f"{user_id}/{uuid.uuid4()}.{file_ext}"
         bucket_name = "reports"
 
@@ -29,24 +35,37 @@ def upload_report():
         file_url = get_public_url(bucket_name, file_path)
 
         
-        extraction_result = extract_data_from_image(file_bytes)
+        print("AI STEP: starting extraction")
+        extraction_result = extract_data_from_image(
+            file_bytes,
+            file.content_type
+        )
+        print("AI STEP: extraction returned")
+        print("AI RESULT:", extraction_result)
 
-        
         if not extraction_result.get("success"):
+            error_code = extraction_result.get("error") or "AI_FAILED"
+
+            if error_code == "QUOTA_EXHAUSTED":
+                return jsonify({
+                    "success": False,
+                    "error": "QUOTA_EXHAUSTED",
+                    "message": "AI quota exhausted. Please try later."
+                }), 429
+
             return jsonify({
                 "success": False,
-                "error": extraction_result.get("error"),
-                "message": extraction_result.get("message")
-            }), 429 if extraction_result.get("error") == "QUOTA_EXHAUSTED" else 400
-
-        extracted_data = extraction_result["data"]
+                "error": "AI_FAILED",
+                "message": extraction_result.get("message") or "AI processing failed."
+            }), 503
 
         
+        extracted_data = extraction_result["data"]
+
         report = DBService.create_report(
             user_id=user_id,
             file_url=file_url,
             raw_data=extracted_data,
-            status="pending_confirmation"
         )
 
         if not report or "id" not in report:
@@ -55,7 +74,7 @@ def upload_report():
         return jsonify({
             "success": True,
             "report_id": report["id"]
-        })
+        }), 200
 
     except Exception as e:
         print("UPLOAD ROUTE ERROR:", e)
