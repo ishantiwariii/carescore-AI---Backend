@@ -49,3 +49,20 @@ def parse_reference_range(range_str: str):
         }
 
     return None
+
+def format_reference_range(ref: dict, unit: str):
+    if not ref:
+        return None
+
+    min_v = ref.get("min")
+    max_v = ref.get("max")
+
+    if min_v is not None and max_v is not None:
+        return f"{min_v} - {max_v} {unit}"
+    if min_v is None and max_v is not None:
+        return f"< {max_v} {unit}"
+    if min_v is not None and max_v is None:
+        return f"> {min_v} {unit}"
+
+    return None
+
