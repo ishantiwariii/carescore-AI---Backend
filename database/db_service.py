@@ -15,7 +15,7 @@ class DBService:
 
         response = supabase.table("reports").insert(data).execute()
 
-        # 🔴 HARD FAIL if insert did not happen
+        
         if not response.data or len(response.data) == 0:
             raise Exception(
                 f"Report insert failed. Supabase response: {response}"
