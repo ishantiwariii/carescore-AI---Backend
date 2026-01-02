@@ -1,12 +1,15 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai.chat_models import ChatGoogleGenerativeAIError
 from langchain_core.prompts import PromptTemplate
 import os
 
 from services.reference_resolver import resolve_test_reference
 
+
 def generate_health_explanation(confirmed_data, deviations):
     """
     Generates user-friendly explanation of results.
+    Explicitly handles Gemini quota exhaustion.
     """
 
     gender = confirmed_data.get("patient", {}).get("gender", "").lower()
@@ -53,8 +56,38 @@ Rules:
 
     chain = prompt | llm_text
 
-    response = chain.invoke({
-        "data": enriched_tests
-    })
+    try:
+        response = chain.invoke({
+            "data": enriched_tests
+        })
 
-    return response.content
+        return {
+            "success": True,
+            "source": "gemini",
+            "content": response.content
+        }
+
+    except ChatGoogleGenerativeAIError as e:
+        error_msg = str(e)
+
+        
+        if "RESOURCE_EXHAUSTED" in error_msg or "429" in error_msg:
+            return {
+                "success": False,
+                "error": "QUOTA_EXHAUSTED",
+                "message": "Gemini API quota exhausted. Please retry after some time."
+            }
+
+        
+        return {
+            "success": False,
+            "error": "GEMINI_ERROR",
+            "message": "Gemini failed to generate explanation."
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": "INTERNAL_ERROR",
+            "message": str(e)
+        }
