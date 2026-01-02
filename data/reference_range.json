@@ -1,351 +1,252 @@
 [
   {
-    "category": "A. Complete Blood Count (CBC) Related",
+    "category_key": "cbc",
+    "category_name": "Complete Blood Count (CBC)",
     "tests": [
       {
-        "test": "Hemoglobin (Hb)",
+        "test_key": "hemoglobin",
+        "display_name": "Hemoglobin (Hb)",
         "unit": "g/dL",
         "ranges": {
           "male": { "min": 13.2, "max": 16.6 },
           "female": { "min": 11.6, "max": 15.0 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Total RBC Count",
+        "test_key": "rbc_count",
+        "display_name": "Total RBC Count",
         "unit": "x10^12/L",
         "ranges": {
           "male": { "min": 4.35, "max": 5.65 },
           "female": { "min": 3.92, "max": 5.13 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Total WBC Count",
+        "test_key": "wbc_count",
+        "display_name": "Total WBC Count",
         "unit": "x10^9/L",
         "ranges": {
           "male": { "min": 3.4, "max": 9.6 },
           "female": { "min": 3.4, "max": 9.6 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Platelet Count",
+        "test_key": "platelet_count",
+        "display_name": "Platelet Count",
         "unit": "x10^9/L",
         "ranges": {
           "male": { "min": 135, "max": 317 },
           "female": { "min": 157, "max": 371 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Hematocrit (PCV)",
+        "test_key": "hematocrit",
+        "display_name": "Hematocrit (PCV)",
         "unit": "%",
         "ranges": {
           "male": { "min": 38.3, "max": 48.6 },
           "female": { "min": 35.5, "max": 44.9 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Mean Corpuscular Volume (MCV)",
+        "test_key": "mcv",
+        "display_name": "Mean Corpuscular Volume (MCV)",
         "unit": "fL",
         "ranges": {
           "male": { "min": 78.2, "max": 97.9 },
           "female": { "min": 78.2, "max": 97.9 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "RDW (Red Cell Distribution Width)",
+        "test_key": "rdw",
+        "display_name": "RDW",
         "unit": "%",
         "ranges": {
           "male": { "min": 11.8, "max": 14.5 },
           "female": { "min": 11.8, "max": 14.5 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       }
     ]
   },
+
   {
-    "category": "B. Diabetes & Sugar Tests",
+    "category_key": "diabetes",
+    "category_name": "Diabetes & Sugar Tests",
     "tests": [
       {
-        "test": "Fasting Blood Sugar (FBS)",
+        "test_key": "glucose_fasting",
+        "display_name": "Fasting Blood Sugar (FBS)",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 70, "max": 99 },
           "female": { "min": 70, "max": 99 }
-        },
-        "sources": ["Mayo Clinic (test description pages)", "ADA"]
+        }
       },
       {
-        "test": "HbA1c",
+        "test_key": "hba1c",
+        "display_name": "HbA1c",
         "unit": "%",
         "ranges": {
           "male": { "min": 0, "max": 5.6 },
           "female": { "min": 0, "max": 5.6 }
         },
-        "note": "5.7-6.4% indicates Prediabetes; >= 6.5% indicates Diabetes",
-        "sources": ["Mayo Clinic (test description pages)"]
+        "note": "5.7–6.4 prediabetes, ≥6.5 diabetes"
       }
     ]
   },
+
   {
-    "category": "C. Kidney Function Tests (KFT)",
+    "category_key": "kidney",
+    "category_name": "Kidney Function Tests",
     "tests": [
       {
-        "test": "Serum Creatinine",
+        "test_key": "creatinine",
+        "display_name": "Serum Creatinine",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 0.74, "max": 1.35 },
           "female": { "min": 0.59, "max": 1.04 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Blood Urea Nitrogen (BUN)",
+        "test_key": "bun",
+        "display_name": "Blood Urea Nitrogen (BUN)",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 8, "max": 24 },
           "female": { "min": 6, "max": 21 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Estimated GFR (eGFR)",
-        "unit": "mL/min/BSA",
+        "test_key": "egfr",
+        "display_name": "Estimated GFR",
+        "unit": "mL/min/1.73m2",
         "ranges": {
           "male": { "min": 60, "max": 120 },
           "female": { "min": 60, "max": 120 }
-        },
-        "note": "Values >60 are generally considered normal.",
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Serum Sodium",
+        "test_key": "sodium",
+        "display_name": "Serum Sodium",
         "unit": "mmol/L",
         "ranges": {
           "male": { "min": 135, "max": 145 },
           "female": { "min": 135, "max": 145 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Serum Potassium",
+        "test_key": "potassium",
+        "display_name": "Serum Potassium",
         "unit": "mmol/L",
         "ranges": {
           "male": { "min": 3.6, "max": 5.2 },
           "female": { "min": 3.6, "max": 5.2 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Serum Calcium",
+        "test_key": "calcium",
+        "display_name": "Serum Calcium",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 8.6, "max": 10.0 },
           "female": { "min": 8.6, "max": 10.0 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       }
     ]
   },
+
   {
-    "category": "D. Liver Function Tests (LFT)",
+    "category_key": "liver",
+    "category_name": "Liver Function Tests",
     "tests": [
       {
-        "test": "SGPT (ALT)",
+        "test_key": "alt",
+        "display_name": "SGPT (ALT)",
         "unit": "U/L",
         "ranges": {
           "male": { "min": 7, "max": 55 },
           "female": { "min": 7, "max": 45 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "SGOT (AST)",
+        "test_key": "ast",
+        "display_name": "SGOT (AST)",
         "unit": "U/L",
         "ranges": {
           "male": { "min": 8, "max": 48 },
           "female": { "min": 8, "max": 43 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Alkaline Phosphatase (ALP)",
+        "test_key": "alp",
+        "display_name": "Alkaline Phosphatase",
         "unit": "U/L",
         "ranges": {
           "male": { "min": 40, "max": 129 },
           "female": { "min": 35, "max": 104 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Total Bilirubin",
+        "test_key": "bilirubin_total",
+        "display_name": "Total Bilirubin",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 0.1, "max": 1.2 },
           "female": { "min": 0.1, "max": 1.2 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Serum Albumin",
+        "test_key": "albumin",
+        "display_name": "Serum Albumin",
         "unit": "g/dL",
         "ranges": {
           "male": { "min": 3.5, "max": 5.0 },
           "female": { "min": 3.5, "max": 5.0 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       }
     ]
   },
+
   {
-    "category": "E. Lipid Profile",
+    "category_key": "lipid",
+    "category_name": "Lipid Profile",
     "tests": [
       {
-        "test": "Total Cholesterol",
+        "test_key": "cholesterol_total",
+        "display_name": "Total Cholesterol",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 0, "max": 199 },
           "female": { "min": 0, "max": 199 }
-        },
-        "note": "<200 is desirable",
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "HDL Cholesterol",
+        "test_key": "hdl",
+        "display_name": "HDL Cholesterol",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 40, "max": 100 },
           "female": { "min": 50, "max": 100 }
-        },
-        "note": "Higher is better; <40 (M) or <50 (F) is risk factor",
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "LDL Cholesterol",
+        "test_key": "ldl",
+        "display_name": "LDL Cholesterol",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 0, "max": 99 },
           "female": { "min": 0, "max": 99 }
-        },
-        "note": "<70 for high risk; <100 optimal",
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       },
       {
-        "test": "Triglycerides",
+        "test_key": "triglycerides",
+        "display_name": "Triglycerides",
         "unit": "mg/dL",
         "ranges": {
           "male": { "min": 0, "max": 149 },
           "female": { "min": 0, "max": 149 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
-      }
-    ]
-  },
-  {
-    "category": "F. Thyroid Function Tests",
-    "tests": [
-      {
-        "test": "TSH",
-        "unit": "mIU/L",
-        "ranges": {
-          "male": { "min": 0.3, "max": 4.2 },
-          "female": { "min": 0.3, "max": 4.2 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
-      },
-      {
-        "test": "Free T4",
-        "unit": "ng/dL",
-        "ranges": {
-          "male": { "min": 0.9, "max": 1.7 },
-          "female": { "min": 0.9, "max": 1.7 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
-      }
-    ]
-  },
-  {
-    "category": "G. Urine Routine Examination",
-    "tests": [
-      {
-        "test": "Urine pH",
-        "unit": "pH",
-        "ranges": {
-          "male": { "min": 5.0, "max": 8.0 },
-          "female": { "min": 5.0, "max": 8.0 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
-      },
-      {
-        "test": "Urine Specific Gravity",
-        "unit": "unitless",
-        "ranges": {
-          "male": { "min": 1.002, "max": 1.030 },
-          "female": { "min": 1.002, "max": 1.030 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
-      },
-      {
-        "test": "Urine Glucose",
-        "unit": "Qualitative",
-        "ranges": {
-          "male": { "min": 0, "max": 0 },
-          "female": { "min": 0, "max": 0 }
-        },
-        "note": "Result should be Negative",
-        "sources": ["Mayo Clinic (test description pages)"]
-      }
-    ]
-  },
-  {
-    "category": "I. Vitamin & Mineral Tests",
-    "tests": [
-      {
-        "test": "Ferritin",
-        "unit": "mcg/L",
-        "ranges": {
-          "male": { "min": 31, "max": 409 },
-          "female": { "min": 13, "max": 150 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
-      },
-      {
-        "test": "Vitamin B12",
-        "unit": "ng/L",
-        "ranges": {
-          "male": { "min": 180, "max": 914 },
-          "female": { "min": 180, "max": 914 }
-        },
-        "sources": ["Mayo Clinic (test description pages)"]
-      }
-    ]
-  },
-  {
-    "category": "L. Miscellaneous / Routine",
-    "tests": [
-      {
-        "test": "PSA (Prostate Specific Antigen)",
-        "unit": "ng/mL",
-        "ranges": {
-          "male": { "min": 0, "max": 4.0 },
-          "female": { "min": null, "max": null }
-        },
-        "note": "Age dependent: 40-49y <2.5; 50-59y <3.5; 60-69y <4.5",
-        "sources": ["Mayo Clinic (test description pages)"]
-      },
-      {
-        "test": "PT / INR",
-        "unit": "Ratio",
-        "ranges": {
-          "male": { "min": 0.9, "max": 1.1 },
-          "female": { "min": 0.9, "max": 1.1 }
-        },
-        "note": "For patients NOT on anticoagulant therapy",
-        "sources": ["Mayo Clinic (test description pages)"]
+        }
       }
     ]
   }
